@@ -53,6 +53,16 @@ void purgeObjects() {
 		}
 	}
 }
+
+void checkCollision() {
+//	for( int i = 0; i<aliens.size();i++) {
+//		if(aliens.get(i).collisionBox.intersects(laser.collisionBox))
+//		for( int j = 0; j<laser.size();j++) {
+//			
+//		}
+//	}
+	//continue Collision Management
+}
 @Override
 public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
