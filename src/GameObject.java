@@ -13,7 +13,7 @@ public class GameObject {
 		 this.y =y;
 		 this.width = width;
 		 this.height =height;
-		 collisionBox = new Rectangle(x,y);
+		 collisionBox = new Rectangle(x,y,width,height);
 		 
 		 speed = 0;
 		 isActive = true;

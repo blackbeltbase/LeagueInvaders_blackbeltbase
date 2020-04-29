@@ -64,6 +64,9 @@ Font otherMessages;
 	 
 	void updateGameState() {  
 		manager.update();
+		if(rocket.isActive == false) {
+			currentState = END;
+		}
 	}
 	
 	void updateEndState()  { 
@@ -78,7 +81,8 @@ Font otherMessages;
 		 g.drawString("lEaGuE_iNvAdErS", 40, 100);
 		 g.setFont(otherMessages);
 		 g.drawString("Press ENTER to start", 40, 300);
-		 g.drawString("Press SPACE for instructions", 40, 350);
+		 g.drawString("Press SPACE for shooting", 40, 350);
+		 g.drawString("ARROW KEYS for moving", 40, 400);
 	 }
 	 
 	void  drawGameState(Graphics g) { 
@@ -101,13 +105,12 @@ Font otherMessages;
 		 g.drawString("GAME OVER", 40, 100);
 		 g.drawString("BUCKAROO", 40, 150);
 		 g.setFont(otherMessages);
-		 g.drawString("You killed _ enimies (f in the chat)", 40, 300);
-		 g.drawString("Press ENTER to restart", 40, 350);
+		 g.drawString("You killed "+manager.getScore()+ " enemies (f in the chat)", 40, 300);
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("action");
+//		System.out.println("action");
 		if(currentState == MENU){
 		    updateMenuState();
 		}else if(currentState == GAME){
@@ -128,37 +131,48 @@ Font otherMessages;
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;
-		    } else {
-		        currentState++;
+		    } else if(currentState== MENU){
+		        currentState = GAME;
 		    }
+		    else if(currentState == GAME) {
+		    	currentState  =END;
+		    }
+		    
 		    if(currentState ==GAME) {
 		    	startGame();
 		    }
+		    
 		    if(currentState ==END) {
 		    	alienSpawn.stop();
+		    	rocket = new Rocketship(rocketX, rocketY, widthAKAHeight,widthAKAHeight);
+		    	manager = new ObjectManager(rocket);
 		    }
+		   
 		}   
+	
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
 		    System.out.println("UP");
 		    if(rocket.y>=10) {
 		    rocket.up();}
 		}
-		else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+		
+		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
 		    System.out.println("DOWN");
 		    if(rocket.y<LeagueInvaders.HEIGHT-100) {
 		    rocket.down();}
-		    //note:this does not work redo
 		}
-		else if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+		
+		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 		    System.out.println("LEFT");
 		    if(rocket.x>=10) {
 		    rocket.left();}
 		}
-		else if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+		
+		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
 		    System.out.println("RIGHT");
 		    if(rocket.x<LeagueInvaders.WIDTH-70) {
 		    rocket.right();}
-		    //note:this does not work redo
+
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_SPACE && currentState == GAME) {
