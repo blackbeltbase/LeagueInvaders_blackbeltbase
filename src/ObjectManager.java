@@ -26,6 +26,7 @@ void update() {
 
 if(rocket.isActive) {
 	rocket.update();
+	
 	for(Alien s:aliens) {
 		s.update();
 		if(s.y>LeagueInvaders.HEIGHT) {
@@ -38,6 +39,7 @@ if(rocket.isActive) {
 			s.isActive = false;
 		}
 	}}
+
 	checkCollision();
 	purgeObjects();
 }
@@ -82,6 +84,7 @@ void checkCollision() {
 		if(rocket.collisionBox.intersects(aliens.get(i).collisionBox)) {
 			rocket.isActive = false;
 	System.out.println("rocket destroyed");
+	
 		}
 	}
 }

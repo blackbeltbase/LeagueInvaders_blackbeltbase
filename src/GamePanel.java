@@ -28,6 +28,7 @@ Font otherMessages;
     public static boolean needImage = true;
     public static boolean gotImage = false;	
     Timer alienSpawn;
+    boolean autofire = false;
     void startGame() {
     	 alienSpawn = new Timer(1000 , manager);
     	    alienSpawn.start();
@@ -64,8 +65,12 @@ Font otherMessages;
 	 
 	void updateGameState() {  
 		manager.update();
+		if(autofire) {
+			manager.addProjectile(rocket.getProjectile());
+		}
 		if(rocket.isActive == false) {
 			currentState = END;
+			System.out.println("inside of END");
 		}
 	}
 	
@@ -131,54 +136,52 @@ Font otherMessages;
 		if (e.getKeyCode()==KeyEvent.VK_ENTER) {
 		    if (currentState == END) {
 		        currentState = MENU;
-		    } else if(currentState== MENU){
-		        currentState = GAME;
+		        alienSpawn.stop();
+		    	rocket = new Rocketship(rocketX, rocketY, widthAKAHeight,widthAKAHeight);
+		    	manager = new ObjectManager(rocket);
+		    } else {
+		        currentState++;
 		    }
-		    else if(currentState == GAME) {
-		    	currentState  =END;
-		    }
-		    
 		    if(currentState ==GAME) {
 		    	startGame();
 		    }
-		    
-		    if(currentState ==END) {
-		    	alienSpawn.stop();
-		    	rocket = new Rocketship(rocketX, rocketY, widthAKAHeight,widthAKAHeight);
-		    	manager = new ObjectManager(rocket);
-		    }
-		   
-		}   
-	
+		}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE && currentState == GAME) {
+			manager.addProjectile(rocket.getProjectile());
+		}
 		if (e.getKeyCode()==KeyEvent.VK_UP) {
-		    System.out.println("UP");
+		 
 		    if(rocket.y>=10) {
 		    rocket.up();}
 		}
 		
 		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-		    System.out.println("DOWN");
+		   
 		    if(rocket.y<LeagueInvaders.HEIGHT-100) {
 		    rocket.down();}
 		}
 		
 		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
-		    System.out.println("LEFT");
+	
 		    if(rocket.x>=10) {
 		    rocket.left();}
 		}
 		
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
-		    System.out.println("RIGHT");
+		  
 		    if(rocket.x<LeagueInvaders.WIDTH-70) {
 		    rocket.right();}
 
 		}
 		
-		if(e.getKeyCode() == KeyEvent.VK_SPACE && currentState == GAME) {
-			manager.addProjectile(rocket.getProjectile());
-			System.out.println("shot");
+		if(e.getKeyCode() == KeyEvent.VK_E && currentState == GAME) {
+			if(autofire == false) {
+			autofire = true;}
+			else if(autofire ) {
+				autofire = false;
+			}
 		}
+	
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
